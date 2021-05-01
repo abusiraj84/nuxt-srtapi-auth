@@ -3,7 +3,14 @@
     <div class="container">
       <h1 class="title">Nuxt Strapi Auth</h1>
     </div>
-
+    <!-- Here we can show the Posts -->
+    <!-- loading if isLoading is true -->
+    <div v-if="!isLoading">Loading</div>
+    <div v-if="isLoading">
+      <div v-for="post in posts" :key="post.id">
+        {{ post.title }}
+      </div>
+    </div>
     <div>
       <input v-model="title" type="text" />
       <div @click="submit">
@@ -21,9 +28,13 @@ export default {
     return {
       isLoading: false,
       title: '',
+      posts: [],
     }
   },
-  mounted() {},
+
+  mounted() {
+    this.getPosts()
+  },
   methods: {
     async submit() {
       this.isLoading = true
@@ -46,6 +57,29 @@ export default {
           },
         })
         this.isLoading = false
+      } catch (e) {
+        console.log(e)
+      }
+    },
+
+    async getPosts() {
+      this.isLoading = true
+
+      try {
+        const res = await this.$apollo.query({
+          query: gql`
+            query {
+              posts {
+                id
+                title
+              }
+            }
+          `,
+          fetchPolicy: 'no-cache',
+        })
+        this.isLoading = false
+        this.posts = res.data.posts
+        this.getPosts()
       } catch (e) {
         console.log(e)
       }
