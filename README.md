@@ -1,5 +1,8 @@
 # nuxt-auth
 
+open .env
+API_AUTH_URL=http://localhost:1337
+
 ## Build Setup
 
 ```bash
@@ -18,4 +21,5 @@ $ npm run generate
 ```
 
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+
 # nuxt-srtapi-auth
