@@ -1,21 +1,31 @@
 <template>
   <section class="section">
-    <Notification v-if="showNoti" message="your post has been added" />
+    <Notification
+      v-if="showNoti"
+      message="your post has been added"
+      class="absolute bottom-10 right-6 animate-bounce"
+    />
     <div class="container">
       <h1 class="title">Nuxt Strapi Auth</h1>
     </div>
     <!-- Here we can show the Posts -->
     <!-- loading if isLoading is true -->
-    <div v-if="!isLoading">Loading</div>
-    <div v-if="isLoading">
+    <div v-if="isLoading">Loading</div>
+    <div v-if="!isLoading">
       <div v-for="post in posts" :key="post.id">
         {{ post.title }}
       </div>
     </div>
     <div>
-      <input v-model="title" type="text" />
-      <div @click="submit">
-        <button>Submit</button>
+      <div>
+        <input
+          v-model="title"
+          class="bg-gray-200 rounded-xl focus:outline-none px-5"
+          type="text"
+        />
+      </div>
+      <div>
+        <button @click="submit">Submit</button>
       </div>
     </div>
   </section>
@@ -41,8 +51,6 @@ export default {
   methods: {
     async submit() {
       this.isLoading = true
-      console.log('submited')
-
       try {
         await this.$apollo.mutate({
           mutation: gql`
@@ -59,7 +67,10 @@ export default {
             title: this.title,
           },
         })
+        // After mutation to database make these methods
         this.isLoading = false
+        this.title = ''
+        this.getPosts()
         this.showNoti = true
         this.hideNoti()
       } catch (e) {
@@ -84,7 +95,9 @@ export default {
         })
         this.isLoading = false
         this.posts = res.data.posts
-        // this.getPosts()
+        // setInterval(() => {
+        //   this.getPosts()
+        // }, 10000)
       } catch (e) {
         console.log(e)
       }

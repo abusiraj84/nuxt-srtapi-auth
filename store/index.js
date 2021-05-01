@@ -2,10 +2,12 @@ import gql from 'graphql-tag'
 
 export const state = () => ({
   me: {},
+  menuIndex: '/dashboard',
 })
 
 export const getters = {
   me: (state) => state.me,
+  menuIndex: (state) => state.menuIndex,
 }
 
 export const actions = {
@@ -47,6 +49,10 @@ export const mutations = {
   // me
   setMe(state, me) {
     state.me = me
+  },
+  // Active menu item
+  setMenuIndex(state, menuIndex) {
+    state.menuIndex = menuIndex
   },
 }
 

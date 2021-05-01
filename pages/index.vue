@@ -17,7 +17,13 @@
       </div>
     </div>
     <div>
-      <input v-model="title" type="text" />
+      <div>
+        <input
+          v-model="title"
+          class="bg-gray-200 rounded-xl focus:outline-none px-5"
+          type="text"
+        />
+      </div>
       <div @click="submit">
         <button>Submit</button>
       </div>
@@ -63,6 +69,7 @@ export default {
           },
         })
         this.isLoading = false
+        this.title = ''
         this.getPosts()
         this.showNoti = true
         this.hideNoti()
