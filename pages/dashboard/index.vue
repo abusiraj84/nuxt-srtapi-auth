@@ -1,17 +1,13 @@
 <template>
   <section class="section">
-    <Notification
-      v-if="showNoti"
-      message="your post has been added"
-      class="absolute bottom-10 right-6 animate-bounce"
-    />
+    <Notification v-if="showNoti" message="your post has been added" />
     <div class="container">
       <h1 class="title">Nuxt Strapi Auth</h1>
     </div>
     <!-- Here we can show the Posts -->
     <!-- loading if isLoading is true -->
-    <div v-if="isLoading">Loading</div>
-    <div v-if="!isLoading">
+    <div v-if="!isLoading">Loading</div>
+    <div v-if="isLoading">
       <div v-for="post in posts" :key="post.id">
         {{ post.title }}
       </div>
@@ -29,6 +25,7 @@
 import gql from 'graphql-tag'
 
 export default {
+  layout: 'dashboard',
   data() {
     return {
       isLoading: false,
@@ -63,7 +60,6 @@ export default {
           },
         })
         this.isLoading = false
-        this.getPosts()
         this.showNoti = true
         this.hideNoti()
       } catch (e) {
@@ -88,9 +84,7 @@ export default {
         })
         this.isLoading = false
         this.posts = res.data.posts
-        // setInterval(() => {
-        //   this.getPosts()
-        // }, 10000)
+        // this.getPosts()
       } catch (e) {
         console.log(e)
       }

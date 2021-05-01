@@ -2,6 +2,7 @@
   <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <nuxt-link class="navbar-item" to="/">Home</nuxt-link>
+      <nuxt-link class="navbar-item" to="/dashboard">Dashboard</nuxt-link>
 
       <a
         role="button"

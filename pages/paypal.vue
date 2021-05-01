@@ -66,7 +66,7 @@ export default {
         })
         this.isLoading = false
       } catch (e) {
-        console.log(e)
+        // console.log(e)
       }
     },
   },

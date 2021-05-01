@@ -3,7 +3,10 @@
     <div
       class="w-52 bg-gray-800 justify-center items-center h-screen text-white"
     >
-      <logo class="w-16"></logo>
+      <nuxt-link to="/" class=""
+        ><logo class="w-16 hover:scale-110"></logo
+      ></nuxt-link>
+
       <ul class="flex flex-col items-center space-y-5">
         <li
           v-for="item in menu"

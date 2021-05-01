@@ -102,7 +102,7 @@ export default {
         // set the jwt to the this.$apolloHelpers.onLogin
         await this.$apolloHelpers.onLogin(jwt)
         this.$store.dispatch('getMe')
-        this.$router.push('/')
+        this.$router.push('/dashboard')
         console.log(user)
       } catch (e) {
         // this.error = e.response.data.message[0].messages[0].message
