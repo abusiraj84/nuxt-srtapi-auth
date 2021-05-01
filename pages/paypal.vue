@@ -2,6 +2,15 @@
   <section class="section">
     <div class="container">
       <h1 class="title">Nuxt Strapi Auth</h1>
+      <client-only>
+        <paypal-checkout
+          amount="10.00"
+          currency="USD"
+          :client="credentials"
+          env="sandbox"
+        >
+        </paypal-checkout>
+      </client-only>
     </div>
 
     <div>
@@ -14,6 +23,7 @@
 </template>
 
 <script>
+// import createPost from '~/Apollo/mutations/createPost'
 import gql from 'graphql-tag'
 
 export default {
@@ -21,9 +31,18 @@ export default {
     return {
       isLoading: false,
       title: '',
+      credentials: {
+        sandbox:
+          'Aa1Xu3pXXotDaNyeZ2gHYAnhRTU9HiX7YfRop96MJjpX9PCDJmCM90inC-uCzWY5IJDM9aw520f2pAkj',
+        production: '<production client id>',
+      },
     }
   },
-  mounted() {},
+  mounted() {
+    // console.log(this.$apolloHelpers.getToken())
+    // console.log(!!this.$apolloHelpers.getToken())
+    // console.log(this.$apollo)
+  },
   methods: {
     async submit() {
       this.isLoading = true
