@@ -4,6 +4,7 @@
       <label for="title" class="mr-2 text-white">Title</label>
       <input
         id="title"
+        v-model="title"
         type="text"
         class="bg-gray-200 px-2 py-1 focus:outline-none rounded-full w-80"
       />
@@ -27,6 +28,7 @@ export default {
       src:
         'https://cdn.dribbble.com/users/1259559/avatars/normal/03d2ec443a4df3da75d0c025d43d0a82.png?1607523381',
       file: '',
+      title: '',
     }
   },
   methods: {
@@ -42,48 +44,62 @@ export default {
 
       // first we have to uplaod image to grab id
       try {
-        await this.$apollo.mutate({
-          mutation: gql`
-            mutation($image: Upload!) {
-              upload(image: $image) {
-                url
-                id
+        const fd = new FormData()
+        fd.append('image', this.file, this.file.name)
+        await this.$apollo
+          .mutate({
+            mutation: gql`
+              mutation($image: Upload!) {
+                upload(file: $image) {
+                  url
+                  id
+                }
               }
-            }
-          `,
-          variables: {
-            image: this.file,
-          },
-        })
+            `,
+            variables: {
+              image: this.file,
+            },
+          })
+          .then((res) => {
+            console.log(res.data.upload.id)
+            // here we will make another mutation to post title and use the image id
+
+            this.sendPost(res.data.upload.id)
+          })
         // console.log(res)
       } catch (error) {
         console.log(error)
       }
-
-      // try {
-      //   await this.$apollo.mutate({
-      //     mutation: gql`
-      //       mutation createPost($title: String!) {
-      //         createPost(input: { data: { title: $title } }) {
-      //           post {
-      //             id
-      //             title
-      //           }
-      //         }
-      //       }
-      //     `,
-      //     variables: {
-      //       title: this.title,
-      //     },
-      //   })
-      //   this.isLoading = false
-      //   this.title = ''
-      //   this.getPosts()
-      //   this.showNoti = true
-      //   this.hideNoti()
-      // } catch (e) {
-      //   console.log(e)
-      // }
+    },
+    async sendPost(id) {
+      try {
+        await this.$apollo.mutate({
+          mutation: gql`
+            mutation createPost($title: String!, $image: ID!) {
+              createPost(input: { data: { title: $title, image: $image } }) {
+                post {
+                  id
+                  title
+                  image {
+                    url
+                  }
+                }
+              }
+            }
+          `,
+          variables: {
+            title: this.title,
+            image: id,
+          },
+        })
+        this.isLoading = false
+        this.title = ''
+        // this.getPosts()
+        // this.showNoti = true
+        // this.hideNoti()
+      } catch (e) {
+        console.log(e)
+      }
     },
   },
 }
