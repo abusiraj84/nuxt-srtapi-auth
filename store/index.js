@@ -3,9 +3,11 @@ import gql from 'graphql-tag'
 export const state = () => ({
   me: {},
   menuIndex: 0,
-  menuIndex2: '/netflix',
+  menuIndex2: 0,
   genres: [],
   movies: [],
+  cardContent: {},
+  type: 0,
 })
 
 export const getters = {
@@ -14,6 +16,8 @@ export const getters = {
   movies: (state) => state.movies,
   menuIndex: (state) => state.menuIndex,
   menuIndex2: (state) => state.menuIndex2,
+  cardContent: (state) => state.cardContent,
+  type: (state) => state.type,
 }
 
 export const actions = {
@@ -99,6 +103,12 @@ export const actions = {
               movies {
                 id
                 name
+                image {
+                  url
+                }
+                details
+                rating
+                date
               }
             }
           }
@@ -116,6 +126,8 @@ export const actions = {
       console.log(e)
     }
   },
+
+  // Fetching series according to genre
   async getSeries({ commit }, payload) {
     try {
       this.isLoading = true
@@ -130,6 +142,12 @@ export const actions = {
               series {
                 id
                 name
+                image {
+                  url
+                }
+                details
+                rating
+                date
               }
             }
           }
@@ -142,6 +160,46 @@ export const actions = {
       })
 
       commit('setMovies', res.data.genre.series)
+    } catch (e) {
+      this.isLoading = false
+      console.log(e)
+    }
+  },
+
+  async getCardMovie({ commit }, payload) {
+    try {
+      this.isLoading = true
+      const client = this.app.apolloProvider.defaultClient
+
+      const res = await client.query({
+        query: gql`
+          query getMovie($id: ID!) {
+            movie(id: $id) {
+              id
+              name
+              details
+              image {
+                url
+              }
+              rating
+              date
+              genres {
+                name
+              }
+              actors {
+                name
+              }
+            }
+          }
+        `,
+
+        fetchPolicy: 'no-cache',
+        variables: {
+          id: payload || 2,
+        },
+      })
+
+      commit('setCard', res.data.movie)
     } catch (e) {
       this.isLoading = false
       console.log(e)
@@ -167,6 +225,12 @@ export const mutations = {
   // movies
   setMovies(state, movies) {
     state.movies = movies
+  },
+  setCard(state, cardContent) {
+    state.cardContent = cardContent
+  },
+  setType(state, type) {
+    state.type = type
   },
 }
 
