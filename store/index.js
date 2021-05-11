@@ -7,6 +7,7 @@ export const state = () => ({
   genres: [],
   movies: [],
   cardContent: {},
+  cardSerie: {},
   type: 0,
 })
 
@@ -17,6 +18,7 @@ export const getters = {
   menuIndex: (state) => state.menuIndex,
   menuIndex2: (state) => state.menuIndex2,
   cardContent: (state) => state.cardContent,
+  cardSerie: (state) => state.cardSerie,
   type: (state) => state.type,
 }
 
@@ -195,11 +197,48 @@ export const actions = {
 
         fetchPolicy: 'no-cache',
         variables: {
-          id: payload || 2,
+          id: payload || 1,
         },
       })
 
       commit('setCard', res.data.movie)
+    } catch (e) {
+      this.isLoading = false
+      console.log(e)
+    }
+  },
+
+  async getCardSerie({ commit }, payload) {
+    try {
+      this.isLoading = true
+      const client = this.app.apolloProvider.defaultClient
+
+      const res = await client.query({
+        query: gql`
+          query getSerie($id: ID!) {
+            serie(id: $id) {
+              id
+              name
+              details
+              image {
+                url
+              }
+              rating
+              date
+              genres {
+                name
+              }
+            }
+          }
+        `,
+
+        fetchPolicy: 'no-cache',
+        variables: {
+          id: payload || 1,
+        },
+      })
+
+      commit('setCardSerie', res.data.serie)
     } catch (e) {
       this.isLoading = false
       console.log(e)
@@ -228,6 +267,9 @@ export const mutations = {
   },
   setCard(state, cardContent) {
     state.cardContent = cardContent
+  },
+  setCardSerie(state, cardSerie) {
+    state.cardSerie = cardSerie
   },
   setType(state, type) {
     state.type = type

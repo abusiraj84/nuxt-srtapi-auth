@@ -1,5 +1,6 @@
 <template>
   <div class="bg-main w-screen h-screen">
+    <!-- <button @click="myMethod()">aasdasd</button> -->
     <!-- upper half container -->
     <div class="w-full h-1/2 relative">
       <!-- back button -->
@@ -17,8 +18,8 @@
       <!-- image -->
       <img
         :src="
-          cardContent.image
-            ? 'http://localhost:1337' + cardContent.image.url
+          cardSerie.image
+            ? 'http://localhost:1337' + cardSerie.image.url
             : 'http://localhost:3000/images/thumbnail.jpeg'
         "
         alt=""
@@ -32,7 +33,7 @@
         <div class="w-full flex space-x-3 text-gray-200 justify-start h-7">
           <!-- genre tags -->
           <div
-            v-for="(genre, index) in cardContent.genres"
+            v-for="(genre, index) in cardSerie.genres"
             :key="index"
             class="px-2 bg-card rounded-md flex items-center"
           >
@@ -41,7 +42,7 @@
           <!-- rating -->
           <div class="px-2 bg-card rounded-md flex items-center space-x-1">
             <Icon icon="star" class="text-yellow-400 w-5 h-5" />
-            <h1>{{ cardContent.rating }}</h1>
+            <h1>{{ cardSerie.rating }}</h1>
           </div>
         </div>
         <!-- buttons -->
@@ -52,13 +53,11 @@
       </div>
       <div class="mt-5">
         <h1 class="text-xl text-gray-200">
-          {{ cardContent.name }}
-          <span class="text-white text-opacity-30"
-            >({{ cardContent.date }})</span
-          >
+          {{ cardSerie.name }}
+          <span class="text-white text-opacity-30">({{ cardSerie.date }})</span>
         </h1>
         <p class="text-sm mt-2 text-white text-opacity-40">
-          {{ cardContent.details }}
+          {{ cardSerie.details }}
         </p>
       </div>
     </div>
@@ -67,25 +66,31 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Icon from '~/components/Icon'
+// import Icon from '~/components/Icon'
 export default {
   components: {
-    Icon,
+    // Icon,
   },
   layout: 'empty',
   computed: {
-    ...mapGetters(['cardContent']),
+    ...mapGetters(['cardSerie']),
   },
   created() {
     this.showId()
   },
+
   methods: {
+    // myMethod() {
+    //   console.log(this.cardSerie.name)
+    //   console.log(this.cardSerie.id)
+    //   console.log(this.cardSerie.image.url)
+    // },
     getBack() {
       this.$router.push(`/netflix`)
     },
     showId() {
       //   this.$route.param
-      this.$store.dispatch('getCardMovie', this.$route.params.id)
+      this.$store.dispatch('getCardSerie', this.$route.params.id)
     },
   },
 }

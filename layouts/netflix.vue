@@ -147,7 +147,6 @@ export default {
     clickGenre(index, id) {
       this.$store.commit('setMenuIndex2', index)
       this.index2 = index
-      console.log(index)
       // fetches movies or series according to id
       if (this.index === 0) {
         this.$store.dispatch('getMovies', id)
@@ -157,7 +156,11 @@ export default {
     },
 
     pushtoPageCard(id) {
-      this.$router.push(`/netflix/${id}`)
+      if (this.$store.state.type === 0) {
+        this.$router.push(`/netflix/${id}`)
+      } else {
+        this.$router.push(`/netflix/series/${id}`)
+      }
       // this.isShow = true
       // if (this.type === 0) {
       //   this.$store.dispatch('getCardMovie', id)
