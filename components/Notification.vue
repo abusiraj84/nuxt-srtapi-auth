@@ -1,6 +1,8 @@
 <template>
-  <div :class="`is-${type}`" class="notification">
-    {{ message }}
+  <div
+    class="px-5 py-3 bottom-5 bg-myblue flex text-white space-x-4 items-center rounded-sm"
+  >
+    <slot> </slot>
   </div>
 </template>
 

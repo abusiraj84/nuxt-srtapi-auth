@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full flex mx-auto">
+  <div class="w-full h-full flex mx-auto relative">
     <aside class="w-275 bg-gray-200 flex-none bg-bla">
       <!-- sidebar -->
       <div
