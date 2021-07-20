@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full flex mx-auto relative">
+  <div class="w-full h-full flex mx-auto relative z-10">
     <aside class="w-275 bg-gray-200 flex-none bg-bla">
       <!-- sidebar -->
       <div
@@ -46,7 +46,7 @@
             <img
               alt="Emre"
               draggable="true"
-              src="https://pbs.twimg.com/profile_images/1352518651824533506/lrl8dz63_x96.jpg"
+              src="https://pbs.twimg.com/profile_images/1413569637154009091/Kw8mHnHd_400x400.jpg"
             />
           </div>
           <!-- profile text -->
@@ -63,6 +63,14 @@
     </aside>
     <!-- main -->
     <Nuxt />
+    <div class="w-full absolute bottom-5 flex items-center justify-center">
+      <Notification v-if="$store.getters.showNoti">
+        <div v-if="$store.getters.sendTweet" class="flex space-x-3">
+          <h1>Your tweet has been sent.</h1>
+          <nuxt-link to="/" class="font-bold hover:text-white">Show</nuxt-link>
+        </div>
+      </Notification>
+    </div>
   </div>
 </template>
 
@@ -80,12 +88,13 @@ export default {
   },
   mounted() {
     this.getTabs()
+    console.log(this.tabs[1])
   },
   methods: {
     async getTabs() {
-      try {
-        this.isLoading = true
+      this.isLoading = true
 
+      try {
         const res = await this.$apollo.query({
           query: gql`
             query {
@@ -100,13 +109,23 @@ export default {
         })
 
         this.tabs = res.data.tabs
+        // setInterval(() => {
+        //   this.getPosts()
+        // }, 10000)
       } catch (e) {
-        this.isLoading = false
-        // console.log(e)
+        console.log(e)
       }
     },
   },
 }
+// query {
+//               tabs {
+//                 id
+//                 name
+//                 svgName
+//               }
+//             }
+//           `,
 </script>
 
 <style>

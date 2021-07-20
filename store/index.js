@@ -9,6 +9,8 @@ export const state = () => ({
   cardContent: {},
   cardSerie: {},
   type: 0,
+  sendTweet: false,
+  showNoti: false,
 })
 
 export const getters = {
@@ -20,6 +22,8 @@ export const getters = {
   cardContent: (state) => state.cardContent,
   cardSerie: (state) => state.cardSerie,
   type: (state) => state.type,
+  sendTweet: (state) => state.sendTweet,
+  showNoti: (state) => state.showNoti,
 }
 
 export const actions = {
@@ -58,7 +62,7 @@ export const actions = {
     commit('setMe', {})
   },
 
-  //  Get genres bi Cat id
+  //  Get genres bi Catgr id
   async getGenres({ commit }, payload) {
     try {
       this.isLoading = true
@@ -244,6 +248,11 @@ export const actions = {
       console.log(e)
     }
   },
+  setVarFalse({ commit }) {
+    setTimeout(() => {
+      this.commit('setVarFalse')
+    }, 5000)
+  },
 }
 export const mutations = {
   // me
@@ -273,6 +282,16 @@ export const mutations = {
   },
   setType(state, type) {
     state.type = type
+  },
+  setSendTweet(state, sendTweet) {
+    state.sendTweet = sendTweet
+  },
+  setShowNoti(state) {
+    state.showNoti = true
+  },
+  setVarFalse(state) {
+    state.showNoti = false
+    state.sendTweet = false
   },
 }
 

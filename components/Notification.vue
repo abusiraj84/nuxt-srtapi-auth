@@ -15,10 +15,6 @@ export default {
       default: 'success',
       validator: (val) => ['danger', 'success'].includes(val),
     },
-    message: {
-      type: String,
-      default: '',
-    },
   },
 }
 </script>

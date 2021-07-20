@@ -1,14 +1,5 @@
 <template>
-  <div class="absolute flex h-screen">
-    <div class="w-full absolute bottom-5 flex items-center justify-center">
-      <Notification v-if="showNoti">
-        <div v-if="sendTweet" class="flex space-x-3">
-          <h1>Your tweet has been sent.</h1>
-          <nuxt-link to="/" class="font-bold hover:text-white">Show</nuxt-link>
-        </div>
-      </Notification>
-    </div>
-    <div class="w-275"></div>
+  <div class="flex h-screen">
     <main
       class="flex w-990 justify-between overflow-y-auto h-full bg-black static"
     >
@@ -35,7 +26,7 @@
               <img
                 alt="Emre"
                 draggable="true"
-                src="https://pbs.twimg.com/profile_images/1352518651824533506/lrl8dz63_x96.jpg"
+                src="https://pbs.twimg.com/profile_images/1413569637154009091/Kw8mHnHd_400x400.jpg"
               />
             </div>
           </div>
@@ -81,7 +72,9 @@
         <!-- empty space -->
         <div class="w-full h-3 bg-empty"></div>
         <!-- Posts -->
-        <div class=""></div>
+        <div class="w-full h-full">
+          <Post />
+        </div>
       </div>
       <div class="w-1/2">
         <div class="w-1/2 h-full flex flex-col"></div>
@@ -93,9 +86,11 @@
 <script>
 import gql from 'graphql-tag'
 import Icon from '@/components/Icon'
+import Post from '@/components/Post.vue'
 export default {
   components: {
     Icon,
+    Post,
   },
   layout: 'twitterMain',
   data() {
@@ -129,9 +124,9 @@ export default {
         this.isLoading = false
         this.title = ''
         this.getPosts()
-        this.showNoti = true
-        this.sendTweet = true
-        this.hideNoti()
+        this.$store.commit('setSendTweet', true)
+        this.$store.commit('setShowNoti')
+        this.$store.dispatch('setVarFalse')
       } catch (e) {
         console.log(e)
       }
@@ -160,13 +155,6 @@ export default {
       } catch (e) {
         console.log(e)
       }
-    },
-
-    hideNoti() {
-      setTimeout(() => {
-        this.showNoti = false
-        this.sendTweet = false
-      }, 3000)
     },
   },
 }

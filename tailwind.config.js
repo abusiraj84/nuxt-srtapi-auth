@@ -11,6 +11,9 @@ module.exports = {
         bordergray: '#2f3336',
         empty: '#15181C',
       },
+      zIndex: {
+        '-50': '-50',
+      },
     },
   },
   variants: {
